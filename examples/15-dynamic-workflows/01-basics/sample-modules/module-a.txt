@@ -1,0 +1,4 @@
+function parseInput(raw) {
+  // TODO: handle empty input case
+  return raw.trim();
+}

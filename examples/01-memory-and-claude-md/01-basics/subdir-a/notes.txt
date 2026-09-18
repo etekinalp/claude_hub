@@ -1,0 +1,2 @@
+This file exists only so there's something inside subdir-a/ for Claude to read,
+which is what triggers it to pick up subdir-a/CLAUDE.md as extra context.

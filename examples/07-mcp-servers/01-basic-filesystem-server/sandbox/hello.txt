@@ -1,0 +1,3 @@
+This file is inside examples/07-mcp-servers/sandbox/ — the folder the
+example-filesystem MCP server is scoped to. Try reading and writing files
+here via the MCP server's tools, not Claude's built-in Read/Write/Edit.

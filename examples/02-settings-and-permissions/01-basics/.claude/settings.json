@@ -1,0 +1,10 @@
+{
+  "env": {
+    "CLAUDE_HUB_MARKER": "from-shared-project-settings"
+  },
+  "permissions": {
+    "deny": [
+      "Bash(curl:*)"
+    ]
+  }
+}

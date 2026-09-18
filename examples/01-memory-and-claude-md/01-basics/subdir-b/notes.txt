@@ -1,0 +1,2 @@
+This folder deliberately has no CLAUDE.md — it's the contrast case.
+Reading this file should NOT add any new memory markers to what Claude knows.

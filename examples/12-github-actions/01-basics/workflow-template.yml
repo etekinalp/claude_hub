@@ -1,0 +1,24 @@
+# Template only — copy into .github/workflows/claude.yml at the repo root to
+# activate. Not active here by design (see this example's README).
+#
+# Verify the action name/version/inputs against the current GitHub
+# Marketplace listing before relying on this — Actions integrations change
+# independently of the Claude Code CLI docs referenced elsewhere in this repo.
+
+name: Claude Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: "Review this pull request diff and leave a concise summary comment."

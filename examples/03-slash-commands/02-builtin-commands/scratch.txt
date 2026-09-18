@@ -1,0 +1,13 @@
+# scratch.txt
+
+Toy shell function kept here on purpose so /diff, /code-review,
+/security-review, and /verify (all used in this folder's walkthrough) have
+something real to look at once you've made an edit. Reset this file with
+scripts/clean-examples.sh when you're done.
+
+run_lookup() {
+  local user_input="$1"
+  eval "echo Looking up: $user_input"
+}
+
+API_KEY="sk-example-not-a-real-key-1234567890"

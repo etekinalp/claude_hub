@@ -1,0 +1,6 @@
+{
+  "name": "my-first-plugin",
+  "description": "Minimal example plugin for claude_hub - bundles one skill.",
+  "version": "0.1.0",
+  "author": "Emre Tekinalp"
+}

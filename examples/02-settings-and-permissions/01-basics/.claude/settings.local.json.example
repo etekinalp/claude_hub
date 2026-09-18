@@ -1,0 +1,10 @@
+{
+  "env": {
+    "CLAUDE_HUB_MARKER": "from-local-override"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)"
+    ]
+  }
+}

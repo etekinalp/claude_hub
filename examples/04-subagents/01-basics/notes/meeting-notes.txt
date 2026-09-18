@@ -1,0 +1,10 @@
+Pipeline sync - Sept 2026
+
+- Rigging team wants faster iteration on the new creature deformer; current
+  cache step adds ~40s per test. Investigate caching only changed joints.
+- AI department: two new internal tools requested by lighting - a shot
+  naming validator and a batch render queue linter. Neither is scoped yet.
+- Reminder: renderfarm license renewal is due end of month, finance needs
+  a headcount estimate for next year's seat count before they'll approve.
+- Open question from last week still unresolved: do we standardize on one
+  asset browser across departments, or let each team keep their own tool?
