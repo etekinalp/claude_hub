@@ -1,0 +1,3 @@
+A tiny fixture file for the read-only-reviewer skill to look at.
+Nothing special - just something that exists so "review this folder" has
+content to review.

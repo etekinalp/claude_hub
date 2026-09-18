@@ -1,0 +1,2 @@
+Reading this file from inside subproject/ is what triggers Claude Code to
+load subproject/.claude/skills/ for the session - see this example's README.

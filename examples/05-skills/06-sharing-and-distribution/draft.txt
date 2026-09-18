@@ -1,0 +1,6 @@
+Welcome To Our Amazing New Feature!
+
+This Is Going To Change Everything, and honestly it's one of those things where once you see it working end to end across the whole pipeline you start to realize just how many small annoying manual steps it quietly removes for you without you even asking it to!
+
+Getting Started Is Easy
+Just install it and you're done!

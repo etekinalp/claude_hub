@@ -77,16 +77,74 @@ doesn't get re-proposed.
 - **04-subagents**: only covers `tools` + `model`. Missing `background:
   true`, `isolation: worktree`, `maxTurns`, `disallowedTools`, and nested
   subagent delegation.
-- **07-mcp-servers**: 02–05 already flagged as planned (see that folder's
-  index). Additionally missing: MCP "channels" (webhook-style push into a
-  running session), Tool Search (for servers exposing very many tools),
-  and parameter-matching permission rules (`Tool(param:value)`).
+- **07-mcp-servers**: 02 and 04 remain planned (see that folder's index).
+  03, 05, 06, and 07 were built from the Anthropic Academy course "Model
+  Context Protocol: Advanced Topics" (transports, JSON message types,
+  sampling, log/progress notifications, roots). Researching that course
+  surfaced a bigger finding: MCP spec `2026-07-28` (released roughly seven
+  weeks before this was written) deprecates Roots, Sampling, and Logging
+  in favor of a new "Multi Round-Trip Requests" (MRTR) pattern, and
+  removes the stateful session model (`Mcp-Session-Id`, the `initialize`
+  handshake) that StreamableHTTP relied on
+  ([changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog)).
+  Verified directly against the installed `mcp` Python SDK (`2.2.0`, which
+  emits a live `MCPDeprecationWarning` when the affected APIs are called)
+  and against Claude Code's own docs/issue tracker: Claude Code supports
+  Roots today but not Sampling at all (open feature request,
+  [anthropics/claude-code#1785](https://github.com/anthropics/claude-code/issues/1785)),
+  and its early MRTR support has open bugs. Decision made with the user:
+  build the classic (still-functional, 12+ month grace period) pattern the
+  course teaches, with the deprecation and its replacement called out
+  explicitly in each example, rather than silently teaching something
+  already on its way out or jumping to a replacement neither the course
+  nor Claude Code has fully caught up to yet. Follow-up: the user asked
+  for the modern (MRTR) approach to be added too, "next to" the classic
+  ones. Built and empirically verified against the same installed SDK
+  (`2.2.0`): 05 and 07 now each define a second tool
+  (`..._modern`) in the same `server.py`, using `InputRequiredResult` /
+  `ctx.input_responses` / `request_state` instead of a server-initiated
+  push, exercised end to end by a small `client_mrtr_demo.py` harness
+  script in each folder (real two-leg JSON-RPC round trips, real signed
+  `requestState` tokens, not simulated); 03 gained a "Part D" showing
+  `server/discover` and a handshake-free/session-free `tools/call` against
+  the *same unmodified* `server.py` from parts A-C, which turned out to
+  need zero server code changes — the SDK already serves both eras from
+  one process and classifies each request by shape. This reversed an
+  assumption in the original 03 gotcha text (that the SDK "speaks the
+  older session-based protocol by default"); it's dual-era, not
+  old-by-default, and that's now corrected in place. One real gap
+  surfaced during this verification: the SDK's StreamableHTTP transport
+  (unlike its stdio/method-dispatch layer) still enforces the classic
+  session handshake even for fully modern-`_meta` requests, in `2.2.0` —
+  noted as a gotcha in 03 rather than worked around, since it's an
+  accurate reflection of where the SDK actually is. Still missing from
+  this concept: MCP "channels" (webhook-style push into a running
+  session), Tool Search (for servers exposing very many tools), and
+  parameter-matching permission rules (`Tool(param:value)`).
 - **02-settings-and-permissions**: missing environment-variable-based
   config (e.g. a default-model or effort-cap env var), `fallbackModel`
   chains, and server-managed settings (see above, arguably its own
   concept rather than a sub-aspect).
-- **05-skills**: doesn't cover Anthropic's own bundled/first-party skills
-  catalog, only custom ones.
+- **05-skills**: built out from 1 to 7 sub-examples from the Anthropic
+  Academy course "Introduction to Agent Skills" — anatomy/discovery,
+  descriptions/`allowed-tools`, progressive disclosure, a
+  skill-vs-CLAUDE.md-vs-hook worked comparison, sharing/distribution
+  (cross-linked to 08-plugins for the plugin case), and debugging/
+  validation with real broken/fixed structural bugs. Cross-checked
+  against the official docs (`skills`, `sub-agents`, `debug-your-config`)
+  rather than the course alone, which surfaced two real corrections: the
+  course frames `allowed-tools` as restricting tool access when it
+  actually only pre-approves a list for the invoking turn
+  (`disallowed-tools` is the real restriction mechanism, not previously
+  documented in this repo at all); and the course's claimed "skills
+  validator... installed via uv" doesn't match anything in the current
+  official docs — the real diagnostic surface (`/skills`, `/context`,
+  `claude doctor`, `claude --debug`, `/status`, `claude --safe-mode`) is
+  documented instead, verified against three real structural bugs built
+  and actually triggered (a flat SKILL.md file, invalid YAML frontmatter,
+  a non-executable bundled script) rather than only described. Still
+  doesn't cover Anthropic's own bundled/first-party skills catalog, only
+  custom ones.
 - **03-slash-commands**: `builtin-commands-reference.md` is a snapshot —
   worth re-running the research and diffing periodically, since this
   surface changes weekly per the docs' own changelog cadence.
